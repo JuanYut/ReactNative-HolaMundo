@@ -1,49 +1,48 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { StyleSheet, Text, View, SectionList } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  Dimensions,
+  Button,
+} from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import Constants from "expo-location";
+// import { Camara } from 'expo-camera'
 
 // * MAIN COMPONENT
 export default function App() {
+  const [myLocation, setMyLocation] = useState({});
+
+  const buscaLocation = async () => {
+    const { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      return Alert.alert(
+        "No tenemos los permisos necesarios para acceder a la location"
+      );
+    }
+    const location = await Location.getCurrentPositionAsync({});
+    setMyLocation(myLocation);
+  };
+
+  useEffect(() => {
+    buscaLocation();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <SectionList
-        sections={[
-          {
-            title: "Group 1",
-            data: [
-              { key: "1", name: "JuanYut" },
-              { key: "2", name: "Yolanda" },
-              { key: "3", name: "Trunks Sayayin" },
-              { key: "4", name: "Maria" },
-              { key: "5", name: "Genji" },
-            ],
-          },
-          {
-            title: "Group 2",
-            data: [
-              { key: "6", name: "JuanYut" },
-              { key: "7", name: "Yolanda" },
-              { key: "8", name: "Trunks Sayayin" },
-              { key: "9", name: "Maria" },
-              { key: "10", name: "Genji" },
-            ],
-          },
-          {
-            title: "Group 3",
-            data: [
-              { key: "11", name: "JuanYut" },
-              { key: "12", name: "Yolanda" },
-              { key: "13", name: "Trunks Sayayin" },
-              { key: "14", name: "Maria" },
-              { key: "15", name: "Genji" },
-            ],
-          },
-        ]}
-        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
-        renderSectionHeader={({ section }) => (
-          <Text style={styles.section}>{section.title}</Text>
-        )}
-      />
+      <MapView style={styles.map}>
+        {myLocation.coords ? (
+          <Marker
+            coordinate={myLocation.coords}
+            title="My Location"
+            description="Descripcion del punto"
+          />
+        ) : null}
+      </MapView>
     </View>
   );
 }
@@ -57,20 +56,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 22,
   },
-  item: {
-    padding: 10,
-    fontSize: 22,
-    height: 50,
-    borderBottomWidth: "#ccc",
-    borderBottomWidth: 1,
-  },
-  section: {
-    fontSize: 16,
-    fontWeight: "bold",
-    backgroundColor: "#eee",
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });
