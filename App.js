@@ -1,49 +1,64 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, SectionList } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  ImageBackground,
+  Modal,
+  View,
+  Text,
+  Button,
+  Alert,
+} from "react-native";
+
+const crearDialogo = () => {
+  Alert.alert(
+    "Dialogo",
+    "Este es un mensaje del dialogo",
+    [
+      {
+        text: "Cancelar",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "Aceptar",
+        onPress: () => console.log("Boton presionado"),
+      },
+    ],
+    { cancelable: false }
+  );
+};
 
 // * MAIN COMPONENT
 export default function App() {
+  const [modal, setModal] = useState(false);
+
   return (
     <View style={styles.container}>
-      <SectionList
-        sections={[
-          {
-            title: "Group 1",
-            data: [
-              { key: "1", name: "JuanYut" },
-              { key: "2", name: "Yolanda" },
-              { key: "3", name: "Trunks Sayayin" },
-              { key: "4", name: "Maria" },
-              { key: "5", name: "Genji" },
-            ],
-          },
-          {
-            title: "Group 2",
-            data: [
-              { key: "6", name: "JuanYut" },
-              { key: "7", name: "Yolanda" },
-              { key: "8", name: "Trunks Sayayin" },
-              { key: "9", name: "Maria" },
-              { key: "10", name: "Genji" },
-            ],
-          },
-          {
-            title: "Group 3",
-            data: [
-              { key: "11", name: "JuanYut" },
-              { key: "12", name: "Yolanda" },
-              { key: "13", name: "Trunks Sayayin" },
-              { key: "14", name: "Maria" },
-              { key: "15", name: "Genji" },
-            ],
-          },
-        ]}
-        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
-        renderSectionHeader={({ section }) => (
-          <Text style={styles.section}>{section.title}</Text>
-        )}
-      />
+      <Modal animationType="slide" transparent={true} visible={modal}>
+        <View style={styles.center}>
+          <View style={styles.content}>
+            <Text>Soy un Modal</Text>
+            <Button title="Cerrar Modal" onPress={() => setModal(!modal)} />
+          </View>
+        </View>
+      </Modal>
+
+      <Button title="Abrir Modal" onPress={() => setModal(!modal)} />
+      <Button title="Abrir Dialogo" onPress={crearDialogo} />
+
+      <ImageBackground
+        style={styles.background}
+        source={{ uri: "https://placekitten.com/400/400" }}
+      >
+        <Image style={styles.photo} source={require("./assets/icon.png")} />
+
+        <Image
+          style={styles.photo}
+          source={{ uri: "https://placekitten.com/200/200" }}
+        />
+      </ImageBackground>
     </View>
   );
 }
@@ -57,20 +72,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 22,
   },
-  item: {
-    padding: 10,
-    fontSize: 22,
-    height: 50,
-    borderBottomWidth: "#ccc",
-    borderBottomWidth: 1,
+  photo: {
+    height: 200,
+    width: 200,
   },
-  section: {
-    fontSize: 16,
-    fontWeight: "bold",
-    backgroundColor: "#eee",
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
+  background: {
+    height: 400,
+    width: 400,
+  },
+  center: {
+    flex: 1,
+    alignItems: "stretch",
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  content: {
+    backgroundColor: "pink",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 25,
   },
 });
