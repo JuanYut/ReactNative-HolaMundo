@@ -11,38 +11,51 @@ import {
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import Constants from "expo-location";
-// import { Camara } from 'expo-camera'
+import { Camera } from "expo-camera";
 
 // * MAIN COMPONENT
 export default function App() {
-  const [myLocation, setMyLocation] = useState({});
+  const [permisos, setPermisos] = useState(null);
+  const [tipo, setTipo] = useState(Camera.Constants.Type.back);
 
-  const buscaLocation = async () => {
-    const { status } = await Location.requestPermissionsAsync();
-    if (status !== "granted") {
-      return Alert.alert(
-        "No tenemos los permisos necesarios para acceder a la location"
-      );
-    }
-    const location = await Location.getCurrentPositionAsync({});
-    setMyLocation(myLocation);
+  const getPermisos = async () => {
+    const { status } = await Camera.requestPermissionsAsync();
+    setPermisos(status == " granted");
+    console.log(status);
   };
 
   useEffect(() => {
-    buscaLocation();
+    getPermisos();
   }, []);
+
+  if (permisos === null) {
+    return (
+      <View>
+        <Text>Esperando permisos...</Text>
+      </View>
+    );
+  }
+
+  if (permisos === false) {
+    return (
+      <View>
+        <Text>No tenemos acceso a la camara :c</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map}>
-        {myLocation.coords ? (
-          <Marker
-            coordinate={myLocation.coords}
-            title="My Location"
-            description="Descripcion del punto"
-          />
-        ) : null}
-      </MapView>
+      <Camera style={styles.camera} type={tipo}>
+        <Button
+          title="Voltear"
+          onPress={() => {
+            const { front, back } = Camera.Constants.Type;
+            const nuevoTipo = tipo === back ? front : back;
+            setTipo(nuevoTipo);
+          }}
+        />
+      </Camera>
     </View>
   );
 }
@@ -56,8 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 22,
   },
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+  camera: {
+    flex: 1,
   },
 });
