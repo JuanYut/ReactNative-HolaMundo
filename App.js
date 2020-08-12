@@ -1,179 +1,76 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Dimensions,
-  Button,
-  TouchableHighlight,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  ScrollView,
-} from "react-native";
-
-// * Dimensions
-const { width, height } = Dimensions.get("window");
-
-// * Normal Component with Props
-const Texto = ({ style }) => {
-  const [texto, setTexto] = useState("Hola Mundo");
-
-  const actualizarTexto = () => {
-    setTexto("Chao Mundo");
-  };
-
-  return (
-    // se puede pasar un array con los estilos
-    <Text style={[styles.text, style]} onPress={actualizarTexto}>
-      {texto}
-    </Text>
-  );
-};
-
-//  * Children
-const TextoChildren = (props) => {
-  const { children } = props;
-  return <Text>{children}</Text>;
-};
+import { StyleSheet, Text, View, SectionList } from "react-native";
 
 // * MAIN COMPONENT
 export default function App() {
-  const [text, setText] = useState("chanchito feliz :3");
-  const [submit, setSubmit] = useState("");
-
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <Text>TEXTO: {submit} </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Escribe aqui"
-          onChangeText={(myText) => setText(myText)}
-          defaultValue={text}
-        />
-
-        {/* TouchableHighlight */}
-        <TouchableHighlight
-          underlayColor={"red"}
-          activeOpacity={0.3}
-          onPress={() => {
-            setSubmit(text);
-            alert("Texto enviado con exito!");
-          }}
-        >
-          <Text>TouchableHighlight</Text>
-        </TouchableHighlight>
-
-        {/* TouchableNativeFeedback */}
-        <TouchableNativeFeedback
-          backgroundColor={TouchableNativeFeedback.Ripple("#00f", true)}
-          onPress={() => {
-            setSubmit(text);
-            alert("Texto enviado con exito!");
-          }}
-        >
-          <View style={styles.view}>
-            <Text>TouchableNativeFeedback</Text>
-          </View>
-        </TouchableNativeFeedback>
-
-        {/* TouchableOpacity */}
-        <TouchableOpacity
-          style={styles.TouchableOpacity}
-          onPress={() => {
-            setSubmit(text);
-            alert("Texto enviado con exito!");
-          }}
-        >
-          <View style={styles.view}>
-            <Text>TouchableOpacity</Text>
-          </View>
-        </TouchableOpacity>
-
-        {/* TouchableWithoutFeedback */}
-        <TouchableWithoutFeedback
-          style={styles.TouchableOpacity}
-          onPress={() => {
-            setSubmit(text);
-            alert("Texto enviado con exito!");
-          }}
-        >
-          <View style={styles.view}>
-            <Text>TouchableWithoutFeedback</Text>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <StatusBar style="auto" />
-      </ScrollView>
+      <SectionList
+        sections={[
+          {
+            title: "Group 1",
+            data: [
+              { key: "1", name: "JuanYut" },
+              { key: "2", name: "Yolanda" },
+              { key: "3", name: "Trunks Sayayin" },
+              { key: "4", name: "Maria" },
+              { key: "5", name: "Genji" },
+            ],
+          },
+          {
+            title: "Group 2",
+            data: [
+              { key: "6", name: "JuanYut" },
+              { key: "7", name: "Yolanda" },
+              { key: "8", name: "Trunks Sayayin" },
+              { key: "9", name: "Maria" },
+              { key: "10", name: "Genji" },
+            ],
+          },
+          {
+            title: "Group 3",
+            data: [
+              { key: "11", name: "JuanYut" },
+              { key: "12", name: "Yolanda" },
+              { key: "13", name: "Trunks Sayayin" },
+              { key: "14", name: "Maria" },
+              { key: "15", name: "Genji" },
+            ],
+          },
+        ]}
+        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
+        renderSectionHeader={({ section }) => (
+          <Text style={styles.section}>{section.title}</Text>
+        )}
+      />
     </View>
   );
 }
 
 // * Styles --------------------------------------------
 const styles = StyleSheet.create({
-  TouchableOpacity: {
-    backgroundColor: "#EEE",
-  },
-  view: {
-    height: 40,
-    width: 300,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    color: "white",
-    fontSize: 24,
-    height: 100, // 100 unidades relativas, depende del dispositivo. NO son pxs.
-    width: 100,
-  },
-  input: {
-    height: 40,
-    width: width,
-    borderBottomColor: "#ccc",
-    borderBottomWidth: 1,
-  },
   container: {
     flex: 1, // representa todo el alto del dispositivo sumando todos los valores hermanos de FLEX.
     backgroundColor: "#fff",
-    alignItems: "center",
+    alignItems: "stretch",
     justifyContent: "center",
+    paddingTop: 22,
   },
-  scrollView: {
-    width: width, // const { width, height } = Dimensions.get("window");
+  item: {
+    padding: 10,
+    fontSize: 22,
+    height: 50,
+    borderBottomWidth: "#ccc",
+    borderBottomWidth: 1,
+  },
+  section: {
+    fontSize: 16,
+    fontWeight: "bold",
+    backgroundColor: "#eee",
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
   },
 });
